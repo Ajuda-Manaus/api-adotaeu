@@ -19,6 +19,11 @@ module.exports = {
 
   },
   "globals": {
-
-  }
+    "describe": true,
+    "it": true,
+    "expect": true,
+    "app": true,
+    "request": true,
+    "chai":true
+   }
 };

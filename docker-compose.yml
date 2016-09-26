@@ -1,0 +1,16 @@
+version: '2'
+services:
+  library:
+    build:
+      ## pega os dados da máquina local
+      context: .
+      dockerfile: Dockerfile
+      ## Comanda para executar quando terminar a instalação
+  #  command:  
+    environment:
+      NODE_ENV: development
+    ports:
+      - 4000:4000
+    volumes:
+      - .:/app/api/
+      - /app/api/node_modules

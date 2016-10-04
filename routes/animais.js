@@ -18,4 +18,16 @@
 *     }
 *
 */
+module.exports = (app) => {
+	const animais = app.models.animais;
 
+	app.get('/animais', (req, res) => {
+		animais.find({}, (err, animais) => {
+		  if (err) {
+		    return res.status(412).json(err);
+		  }
+		  return res.json(animais);
+		});
+	});	
+};
+  

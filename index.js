@@ -1,16 +1,28 @@
+import consign from 'consign';
+import express from 'express';
+import bodyParser from 'body-parser';
+import compression from 'compression';
+import seraph from 'seraph';
+import config from './config.js';
 
-//console.log("rodou");
-
-const express = require('express');
-
-// Constants
-const PORT = 4000;
-
-// App
 const app = express();
-app.get('/', (req, res) => {
-  res.send('Hellooo world\n');
+const db = seraph(config.neo4j);
+
+app.use(bodyParser.urlencoded(config.bodyParser));
+app.use(bodyParser.json());
+app.use(compression());
+
+consign(config.consign)
+  .include('models')
+  .then('routes')
+  .into(app, db)
+;
+
+app.listen(config.server.port, () => {
+  if (!config.isTest) {
+    console.log('adota-eu API');
+    console.log(`Address: ${config.server.host}:${config.server.port}`);
+  }
 });
 
-app.listen(PORT);
-console.log(`Running on http://localhost:${PORT}`);
+export default app;

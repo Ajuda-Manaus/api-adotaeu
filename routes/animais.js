@@ -19,62 +19,17 @@
 *
 */
 module.exports = (app) => {
-	const animais = app.models.animais;
+  const animais = app.controlers.animais;
 
-	app.get('/animais', (req, res) => {
-		animais.find({}, (err, animais) => {
-		  if (err) {
-		    return res.status(412).json(err);
-		  }
-		  return res.json(animais);
-		});
-	});	
+	app.get('/animais', animais.findAll);
 
-	app.post('/animais', (req, res) => {
-    const animal = req.body;
-    animais.save(animal, (err, novoAnimal) => {
-      if (err) {
-        return res.status(412).json(err);
-      }
-      return res.json(novoAnimal);
-    });
-  });
+	app.post('/animais', animais.add);
 
-	app.get('/animais/:animalId', (req, res) => {
-    const { animalId } = req.params;
-    animais.read(animalId, (err, animal) => {
-      if (err) {
-        if (err.message === 'Invalid ID' ||
-            err.neo4jException === 'NodeNotFoundException') {
-          return res.status(404).end();
-        }
-        return res.status(412).json(err);
-      }
-      return res.json(animal);
-    });
-  });
+	app.get('/animais/:animalId', animais.findByAnimalId);
 
-	app.put('/animais/:animalId', (req, res) => {
-    const { animalId } = req.params;
-    const animal = req.body;
-    Object.assign(animal, { id: animalId });
-    animais.save(animal, (saveErr, novoAnimal) => {
-      if (saveErr) {
-        return res.status(412).json(saveErr);
-      }
-      return res.json(novoAnimal);
-    });
-  });
+	app.put('/animais/:animalId', animais.update);
 
-	app.delete('/animais/:animalId', (req, res) => {
-    const { animalId } = req.params;
-    animais.delete(animalId, (err) => {
-      if (err) {
-        return res.status(412).json(err);
-      }
-      return res.status(204).end();
-    });
-  });
+	app.delete('/animais/:animalId', animais.delete);
 
 };
   

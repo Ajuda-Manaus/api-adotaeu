@@ -14,6 +14,7 @@ app.use(compression());
 
 consign(config.consign)
   .include('models')
+  .then('controlers')
   .then('routes')
   .into(app, db)
 ;

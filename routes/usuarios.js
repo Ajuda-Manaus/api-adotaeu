@@ -19,18 +19,17 @@
 *
 */
 module.exports = (app) => {
-  const animais = app.controlers.animais;
 	const usuario = app.controlers.usuario;
 
-	app.get('/animais', animais.findAll);
+	app.get('/usuario', usuario.getAll);
 
-	app.post('/animais', animais.add);
+	app.post('/usuario', usuario.add);
 
-	app.get('/animais/:animalId', animais.findByAnimalId);
+	app.get('/usuario/:Id', usuario.getByUsuarioId);
 
-	app.put('/animais/:animalId', animais.update);
+	app.put('/usuario/:Id', usuario.update);
 
-	app.delete('/animais/:animalId', animais.delete);
+	app.delete('/usuario/:Id', usuario.delete);
 /**/
 };
   

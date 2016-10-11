@@ -23,13 +23,13 @@ module.exports = (app) => {
 
 	app.get('/usuario', usuario.getAll);
 
+	app.get('/usuario/:usuarioId', usuario.getByUsuarioId);
+
 	app.post('/usuario', usuario.add);
 
-	app.get('/usuario/:Id', usuario.getByUsuarioId);
+	app.put('/usuario/:usuarioId', usuario.update);
 
-	app.put('/usuario/:Id', usuario.update);
-
-	app.delete('/usuario/:Id', usuario.delete);
+	app.delete('/usuario/:usuarioId', usuario.delete);
 /**/
 };
   

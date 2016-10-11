@@ -2,7 +2,7 @@ module.exports = function(app) {
 	const usuario = app.models.usuario;
 
 	this.getAll = function(req, res){
-		usuario.find({}, (err, usuario) => {
+		usuario.find({}, 'usuario', (err, usuario) => {
 		  if (err) {
 		    return res.status(412).json(err);
 		  }
@@ -14,14 +14,14 @@ module.exports = function(app) {
   	};
 
 	this.add = function(req, res){
-		const animal = req.body;
-		console.log(animal);
-	    usuario.save(animal, (err, novoAnimal) => {
+		const novo = req.body;
+		console.log(novo);
+	    usuario.save(novo, 'usuario', (err, novoUsuario) => {
 	      if (err) {
 	        return res.status(412).json(err);
 	      }
 	      else{
-	      	return res.json(novoAnimal);	
+	      	return res.json(novoUsuario);	
 	      }
 	      
 	    });
@@ -29,11 +29,14 @@ module.exports = function(app) {
 
 
 	this.getByUsuarioId = function(req, res){
-	    const { animalId } = req.params;
-	    usuario.read(animalId, (err, animal) => {
+	    const { usuarioId } = req.params;
+	    usuario.read(usuarioId, (err, usuario) => {
 	      if (err) {
 	        if (err.message === 'Invalid ID' ||
 	            err.neo4jException === 'NodeNotFoundException') {
+	        	console.log(err.message);
+	        	console.log(usuarioId);
+	        	console.log(req.params);
 	          return res.status(404).end();
 	        }
 	        else{
@@ -42,26 +45,26 @@ module.exports = function(app) {
 	        
 	      }
 	      else
-		      return res.json(animal);
+		      return res.json(usuario);
 	    });
   	};
 
   	this.update = function(req, res){
-	    const { animalId } = req.params;
-	    const animal = req.body;
-	    Object.assign(animal, { id: animalId });
-	    usuario.save(animal, (saveErr, novoAnimal) => {
+	    const { usuarioId } = req.params;
+	    const novo = req.body;
+	    Object.assign(novo, { id: usuarioId });
+	    usuario.save(novo, (saveErr, novoUsuario) => {
 	      if (saveErr) {
 	        return res.status(412).json(saveErr);
 	      }
 	      else
-	      	return res.json(novoAnimal);
+	      	return res.json(novoUsuario);
 	    });
 	  };
 
 	this.delete = function(req, res){
-    const { animalId } = req.params;
-    usuario.delete(animalId, (err) => {
+    const { usuarioId } = req.params;
+    usuario.delete(usuarioId, (err) => {
       if (err) {
         return res.status(412).json(err);
       }

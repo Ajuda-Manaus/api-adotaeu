@@ -2,9 +2,9 @@ import model from 'seraph-model';
 import config from '../config.js';
 
 module.exports = (app, db) => {
-  const usuarios = model(db, `usuarios${config.neo4j.envDb}`);
+  const usuario = model(db, `usuario${config.neo4j.envDb}`);
 
-  usuarios.schema = {
+  usuario.schema = {
     nome: { type: String, trim: true, required: true },
     endereco: { type: String, trim: true, required: true },
     senha: { type: String, required: true },
@@ -13,5 +13,5 @@ module.exports = (app, db) => {
     foto: { type: String}
   };
 
-  return usuarios.db;
+  return usuario.db;
 };

@@ -1,22 +1,22 @@
 module.exports = function(app) {
-	const animais = app.models.animais;
+	const animal = app.models.animal;
 
 	this.findAll = function(req, res){
-		animais.find({}, (err, animais) => {
+		animal.find({}, 'animal', (err, animal) => {
 		  if (err) {
 		    return res.status(412).json(err);
 		  }
 		  else{
-		  	return res.json(animais);	
+		  	return res.json(animal);	
 		  }
 		  
 		});
   	};
 
 	this.add = function(req, res){
-		const animal = req.body;
-		console.log(animal);
-	    animais.save(animal, (err, novoAnimal) => {
+		const novo = req.body;
+		console.log(novo);
+	    animal.save(novo, 'animal', (err, novoAnimal) => {
 	      if (err) {
 	        return res.status(412).json(err);
 	      }
@@ -30,7 +30,7 @@ module.exports = function(app) {
 
 	this.findByAnimalId = function(req, res){
 	    const { animalId } = req.params;
-	    animais.read(animalId, (err, animal) => {
+	    animal.read(animalId, (err, animal) => {
 	      if (err) {
 	        if (err.message === 'Invalid ID' ||
 	            err.neo4jException === 'NodeNotFoundException') {
@@ -48,9 +48,9 @@ module.exports = function(app) {
 
   	this.update = function(req, res){
 	    const { animalId } = req.params;
-	    const animal = req.body;
-	    Object.assign(animal, { id: animalId });
-	    animais.save(animal, (saveErr, novoAnimal) => {
+	    const animalNovo = req.body;
+	    Object.assign(animalNovo, { id: animalId });
+	    animal.save(animalNovo, (saveErr, novoAnimal) => {
 	      if (saveErr) {
 	        return res.status(412).json(saveErr);
 	      }
@@ -61,7 +61,7 @@ module.exports = function(app) {
 
 	this.delete = function(req, res){
     const { animalId } = req.params;
-    animais.delete(animalId, (err) => {
+    animal.delete(animalId, (err) => {
       if (err) {
         return res.status(412).json(err);
       }

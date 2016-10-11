@@ -2,9 +2,9 @@ import model from 'seraph-model';
 import config from '../config.js';
 
 module.exports = (app, db) => {
-  const animais = model(db, `animais${config.neo4j.envDb}`);
+  const animal = model(db, `animal${config.neo4j.envDb}`);
 
-  animais.schema = {
+  animal.schema = {
     nome: { type: String, trim: true, required: true },
     raca: { type: String, trim: true, required: true },
     idade: { type: String, required: true },
@@ -12,5 +12,5 @@ module.exports = (app, db) => {
     especie: { type: String, required: true }
   };
 
-  return animais.db;
+  return animal.db;
 };

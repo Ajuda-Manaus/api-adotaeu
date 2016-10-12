@@ -30,6 +30,9 @@ module.exports = (app) => {
 	app.put('/animal/:animalId', animal.update);
 
 	app.delete('/animal/:animalId', animal.delete);
+
+
+	
 /**/
 };
   

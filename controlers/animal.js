@@ -1,5 +1,13 @@
 module.exports = function(app) {
 	const animal = app.models.animal;
+	const erroAnimal = {
+                		"api" : "adota-eu",
+                		"error": {
+                        "number": "01",
+                     	"status":"404",
+                     	"description":"This animal is not found"
+                        		 }
+           				};
 
 	this.findAll = function(req, res){
 		animal.find({}, 'animal', (err, animal) => {
@@ -34,7 +42,7 @@ module.exports = function(app) {
 	      if (err) {
 	        if (err.message === 'Invalid ID' ||
 	            err.neo4jException === 'NodeNotFoundException') {
-	          return res.status(404).end();
+	          return res.status(404).json(erroAnimal);
 	        }
 	        else{
 	        	return res.status(412).json(err);	
@@ -52,7 +60,7 @@ module.exports = function(app) {
 	    Object.assign(animalNovo, { id: animalId });
 	    animal.save(animalNovo, (saveErr, novoAnimal) => {
 	      if (saveErr) {
-	        return res.status(412).json(saveErr);
+	        return res.status(404).json(erroAnimal);
 	      }
 	      else
 	      	return res.json(novoAnimal);
@@ -63,12 +71,14 @@ module.exports = function(app) {
     const { animalId } = req.params;
     animal.delete(animalId, (err) => {
       if (err) {
-        return res.status(412).json(err);
+        return res.status(404).json(erroAnimal);
       }
       else
       	return res.status(204).end();
     });
   };
+
+
 
   	return this;
 };

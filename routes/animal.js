@@ -20,6 +20,7 @@
 */
 module.exports = (app) => {
   const animal = app.controlers.animal;
+  	app.get('/', animal.standard);
 
 	app.get('/animal', animal.findAll);
 	
@@ -30,8 +31,6 @@ module.exports = (app) => {
 	app.put('/animal/:animalId', animal.update);
 
 	app.delete('/animal/:animalId', animal.delete);
-
-
 	
 /**/
 };

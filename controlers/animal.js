@@ -9,6 +9,11 @@ module.exports = function(app) {
                         		 }
            				};
 
+    const apiStandard = {
+    					"api" : "adota-eu",
+						"versao" :"0.0.1"
+    					};
+
 	this.findAll = function(req, res){
 		animal.find({}, 'animal', (err, animal) => {
 		  if (err) {
@@ -20,6 +25,10 @@ module.exports = function(app) {
 		  
 		});
   	};
+
+  	this.standard = function(req, res){
+  		res.json(apiStandard);
+  	}
 
 	this.add = function(req, res){
 		const novo = req.body;

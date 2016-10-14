@@ -1,5 +1,18 @@
+var expressJoi =require('express-joi');
+
+
 module.exports = function(app) {
 	const usuario = app.models.usuario;
+
+	// Use the Joi object to create a few schemas for your routes. 
+	this.getUsersSchema ={
+	    nome: expressJoi.Joi.types.String().alphanum().min(1).max(25),
+	    endereco: expressJoi.Joi.types.String().alphanum().min(1).max(25),
+	    senha: expressJoi.Joi.types.String().alphanum().min(1).max(25),
+	    email: expressJoi.Joi.types.String().alphanum().min(1).max(25),
+	    fone: expressJoi.Joi.types.String().alphanum().min(1).max(25),
+	    foto: expressJoi.Joi.types.String().alphanum().min(1).max(25)
+	};
 
 	this.getAll = function(req, res){
 		usuario.find({}, 'usuario', (err, usuario) => {
@@ -12,6 +25,7 @@ module.exports = function(app) {
 		  
 		});
   	};
+
 
 	this.add = function(req, res){
 		const novo = req.body;

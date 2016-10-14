@@ -1,3 +1,5 @@
+var expressJoi =require('express-joi');
+
 /**
 * @api {get} /animais Request User information
 * @apiName GetAnimais
@@ -18,6 +20,8 @@
 *     }
 *
 */
+
+
 module.exports = (app) => {
 	const usuario = app.controlers.usuario;
 
@@ -25,7 +29,9 @@ module.exports = (app) => {
 
 	app.get('/usuario/:usuarioId', usuario.getByUsuarioId);
 
-	app.post('/usuario', usuario.add);
+
+//app.get('/users',expressJoi.joiValidate(getUsersSchema), handleUsers);
+	app.post('/usuario', expressJoi.joiValidate(usuario.getUsersSchema), usuario.add);
 
 	app.put('/usuario/:usuarioId', usuario.update);
 

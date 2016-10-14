@@ -29,15 +29,16 @@
   "homepage": "https://github.com/Ajuda-Manaus/api-adotaeu#readme",
   "dependencies": {
     "body-parser": "1.15.2",
-    "eslint": "3.6.0",
-    "express": "4.14.0",
-    "nodemon":"*",
+    "chai": "3.5.0",
     "compression": "1.6.2",
     "consign": "0.1.2",
+    "eslint": "3.6.0",
+    "express": "4.14.0",
+    "express-joi": "^0.3.1",
+    "nodemon": "*",
     "seraph": "0.14.4",
     "seraph-model": "0.8.2",
-    "supertest": "1.2.0",
-    "chai": "3.5.0" 
+    "supertest": "1.2.0"
   },
   "devDependencies": {
     "babel-cli": "6.10.1",

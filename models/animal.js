@@ -8,7 +8,7 @@ module.exports = (app, db) => {
     nome: { type: String, trim: true, required: true },
     raca: { type: String, trim: true, required: true },
     idade: { type: String, required: true },
-    situacao: { type: String, required: true },
+    descricao: { type: String, required: true },
     especie: { type: String, required: true }
   };
 

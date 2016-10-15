@@ -5,13 +5,13 @@ module.exports = function(app) {
 	const usuario = app.models.usuario;
 
 	// Use the Joi object to create a few schemas for your routes. 
-	this.getUsersSchema ={
-	    nome: expressJoi.Joi.types.String().alphanum().min(1).max(25),
-	    endereco: expressJoi.Joi.types.String().alphanum().min(1).max(25),
-	    senha: expressJoi.Joi.types.String().alphanum().min(1).max(25),
-	    email: expressJoi.Joi.types.String().alphanum().min(1).max(25),
-	    fone: expressJoi.Joi.types.String().alphanum().min(1).max(25),
-	    foto: expressJoi.Joi.types.String().alphanum().min(1).max(25)
+	this.schemaUsuario ={
+	    nome: expressJoi.Joi.types.String().alphanum().min(1).max(50).required(),
+	    endereco: expressJoi.Joi.types.String().min(1).max(150).required(),
+	    senha: expressJoi.Joi.types.String().regex(/^[a-zA-Z0-9]{3,30}$/),
+	    email: expressJoi.Joi.types.String().email().required(),
+	    fone: expressJoi.Joi.types.String().regex(/^[(]{0,1}[0-9]{2}[)]{0,1}[-\s\.]{0,1}[0-9]{5}[-\s\.]{0,1}[0-9]{4}$/),
+	    foto: expressJoi.Joi.types.String().regex(/\.(jpe?g|png)$/i)
 	};
 
 	this.getAll = function(req, res){

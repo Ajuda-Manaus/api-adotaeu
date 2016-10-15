@@ -29,9 +29,9 @@ module.exports = (app) => {
 
 	app.get('/usuario/:usuarioId', usuario.getByUsuarioId);
 
-	app.post('/usuario', expressJoi.joiValidate(usuario.schemaUsuario), usuario.add);
+	app.post('/usuario', expressJoi.joiValidate(usuario.schemaUsuarioAdd), usuario.add);
 
-	app.put('/usuario/:usuarioId', usuario.update);
+	app.put('/usuario/:usuarioId', expressJoi.joiValidate(usuario.schemaUsuarioUpdate), usuario.update);
 
 	app.delete('/usuario/:usuarioId', usuario.delete);
 /**/

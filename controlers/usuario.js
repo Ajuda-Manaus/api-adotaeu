@@ -4,13 +4,12 @@ var expressJoi =require('express-joi');
 module.exports = function(app) {
 	const usuario = app.models.usuario;
 
-	// Use the Joi object to create a few schemas for your routes. 
+	// Use the Joi object to create a few schemas for your routes.
 	this.schemaUsuarioAdd ={
 	    nome: expressJoi.Joi.types.String().alphanum().min(1).max(50).required(),
 	    endereco: expressJoi.Joi.types.String().min(1).max(150).required(),
 	    senha: expressJoi.Joi.types.String().regex(/^[a-zA-Z0-9]{3,30}$/),
 	    email: expressJoi.Joi.types.String().email().required(),
-	    fone: expressJoi.Joi.types.String().regex(/^[(]{0,1}[0-9]{2}[)]{0,1}[-\s\.]{0,1}[0-9]{5}[-\s\.]{0,1}[0-9]{4}$/),
 	    foto: expressJoi.Joi.types.String().regex(/\.(jpe?g|png)$/i)
 	};
 
@@ -20,7 +19,6 @@ module.exports = function(app) {
 	    endereco: expressJoi.Joi.types.String().min(1).max(150).required(),
 	    senha: expressJoi.Joi.types.String().regex(/^[a-zA-Z0-9]{3,30}$/),
 	    email: expressJoi.Joi.types.String().email().required(),
-	    fone: expressJoi.Joi.types.String().regex(/^[(]{0,1}[0-9]{2}[)]{0,1}[-\s\.]{0,1}[0-9]{5}[-\s\.]{0,1}[0-9]{4}$/),
 	    foto: expressJoi.Joi.types.String().regex(/\.(jpe?g|png)$/i)
 	};
 
@@ -30,9 +28,9 @@ module.exports = function(app) {
 		    return res.status(412).json(err);
 		  }
 		  else{
-		  	return res.json(usuario);	
+		  	return res.json(usuario);
 		  }
-		  
+
 		});
   	};
 
@@ -45,9 +43,9 @@ module.exports = function(app) {
 	        return res.status(412).json(err);
 	      }
 	      else{
-	      	return res.json(novoUsuario);	
+	      	return res.json(novoUsuario);
 	      }
-	      
+
 	    });
   	};
 
@@ -64,9 +62,9 @@ module.exports = function(app) {
 	          return res.status(404).end();
 	        }
 	        else{
-	        	return res.status(412).json(err);	
+	        	return res.status(412).json(err);
 	        }
-	        
+
 	      }
 	      else
 		      return res.json(usuario);

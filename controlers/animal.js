@@ -20,9 +20,9 @@ module.exports = function(app) {
 		    return res.status(412).json(err);
 		  }
 		  else{
-		  	return res.json(animal);	
+		  	return res.json(animal);
 		  }
-		  
+
 		});
   	};
 
@@ -31,22 +31,22 @@ module.exports = function(app) {
   	}
 
 	this.add = function(req, res){
-		const novo = req.body;
+		let novo = req.body;
 		console.log(novo);
 	    animal.save(novo, 'animal', (err, novoAnimal) => {
 	      if (err) {
 	        return res.status(412).json(err);
 	      }
 	      else{
-	      	return res.json(novoAnimal);	
+	      	return res.json(novoAnimal);
 	      }
-	      
+
 	    });
   	};
 
 
 	this.findByAnimalId = function(req, res){
-	    const { animalId } = req.params;
+	    let { animalId } = req.params;
 	    animal.read(animalId, (err, animal) => {
 	      if (err) {
 	        if (err.message === 'Invalid ID' ||
@@ -54,9 +54,9 @@ module.exports = function(app) {
 	          return res.status(404).json(erroAnimal);
 	        }
 	        else{
-	        	return res.status(412).json(err);	
+	        	return res.status(412).json(err);
 	        }
-	        
+
 	      }
 	      else
 		      return res.json(animal);
@@ -64,8 +64,8 @@ module.exports = function(app) {
   	};
 
   	this.update = function(req, res){
-	    const { animalId } = req.params;
-	    const animalNovo = req.body;
+	    let { animalId } = req.params;
+	    let animalNovo = req.body;
 	    Object.assign(animalNovo, { id: animalId });
 	    animal.save(animalNovo, (saveErr, novoAnimal) => {
 	      if (saveErr) {
@@ -77,7 +77,7 @@ module.exports = function(app) {
 	  };
 
 	this.delete = function(req, res){
-    const { animalId } = req.params;
+    let { animalId } = req.params;
     animal.delete(animalId, (err) => {
       if (err) {
         return res.status(404).json(erroAnimal);

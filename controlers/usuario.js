@@ -1,101 +1,85 @@
-var expressJoi =require('express-joi');
+import neo4j from 'neo4j';
 
-
+// private constructor:
 module.exports = function(app) {
-	const usuario = app.models.usuario;
 
-	// Use the Joi object to create a few schemas for your routes. 
-	this.schemaUsuarioAdd ={
-	    nome: expressJoi.Joi.types.String().alphanum().min(1).max(50).required(),
-	    endereco: expressJoi.Joi.types.String().min(1).max(150).required(),
-	    senha: expressJoi.Joi.types.String().regex(/^[a-zA-Z0-9]{3,30}$/),
-	    email: expressJoi.Joi.types.String().email().required(),
-	    fone: expressJoi.Joi.types.String().regex(/^[(]{0,1}[0-9]{2}[)]{0,1}[-\s\.]{0,1}[0-9]{5}[-\s\.]{0,1}[0-9]{4}$/),
-	    foto: expressJoi.Joi.types.String().regex(/\.(jpe?g|png)$/i)
-	};
+var db = new neo4j.GraphDatabase("http://neo4j:root@localhost:7474");
+const User = app.models.usuario;
+// static methods:
+User.get = function (id, callback) {
+	var qp = {
+		query: [
+			'MATCH (user:User)',
+			'WHERE ID(user) = {userId}',
+			'RETURN user',
+		].join('\n'),
+		params: {
+			userId: parseInt(id)
+		}
+	}
 
-	this.schemaUsuarioUpdate ={
-		usuarioId: expressJoi.Joi.types.Number(),
-	    nome: expressJoi.Joi.types.String().alphanum().min(1).max(50).required(),
-	    endereco: expressJoi.Joi.types.String().min(1).max(150).required(),
-	    senha: expressJoi.Joi.types.String().regex(/^[a-zA-Z0-9]{3,30}$/),
-	    email: expressJoi.Joi.types.String().email().required(),
-	    fone: expressJoi.Joi.types.String().regex(/^[(]{0,1}[0-9]{2}[)]{0,1}[-\s\.]{0,1}[0-9]{5}[-\s\.]{0,1}[0-9]{4}$/),
-	    foto: expressJoi.Joi.types.String().regex(/\.(jpe?g|png)$/i)
-	};
-
-	this.getAll = function(req, res){
-		usuario.find({}, 'usuario', (err, usuario) => {
-		  if (err) {
-		    return res.status(412).json(err);
-		  }
-		  else{
-		  	return res.json(usuario);	
-		  }
-		  
-		});
-  	};
-
-
-	this.add = function(req, res){
-		const novo = req.body;
-		console.log(novo);
-	    usuario.save(novo, 'usuario', (err, novoUsuario) => {
-	      if (err) {
-	        return res.status(412).json(err);
-	      }
-	      else{
-	      	return res.json(novoUsuario);	
-	      }
-	      
-	    });
-  	};
-
-
-	this.getByUsuarioId = function(req, res){
-	    const { usuarioId } = req.params;
-	    usuario.read(usuarioId, (err, usuario) => {
-	      if (err) {
-	        if (err.message === 'Invalid ID' ||
-	            err.neo4jException === 'NodeNotFoundException') {
-	        	console.log(err.message);
-	        	console.log(usuarioId);
-	        	console.log(req.params);
-	          return res.status(404).end();
-	        }
-	        else{
-	        	return res.status(412).json(err);	
-	        }
-	        
-	      }
-	      else
-		      return res.json(usuario);
-	    });
-  	};
-
-  	this.update = function(req, res){
-	    const { usuarioId } = req.params;
-	    const novo = req.body;
-	    Object.assign(novo, { id: usuarioId });
-	    usuario.save(novo, (saveErr, novoUsuario) => {
-	      if (saveErr) {
-	        return res.status(412).json(saveErr);
-	      }
-	      else
-	      	return res.json(novoUsuario);
-	    });
-	  };
-
-	this.delete = function(req, res){
-    const { usuarioId } = req.params;
-    usuario.delete(usuarioId, (err) => {
-      if (err) {
-        return res.status(412).json(err);
-      }
-      else
-      	return res.status(204).end();
-    });
-  };
-
-  	return this;
+	db.cypher(qp, function (err, result) {
+		if (err) return callback(err);
+		callback(null, result[0]['user']);
+	});
 };
+
+User.getBy = function (field, value, callback) {
+	var qp = {
+		query: [
+			'MATCH (user:User)',
+			'WHERE ' + field + ' = {value}',
+			'RETURN user',
+		].join('\n'),
+		params: {
+			value: value
+		}
+	}
+
+	db.cypher(qp, function (err, result) {
+		if (err) return callback(err);
+		if (!result[0]) {
+			callback(null, null);
+		} else {
+			callback(null, result[0]['user']);
+		}
+	});
+}
+
+User.create = function (data, callback) {
+	var qp = {
+		query: [
+			'CREATE (user:User {data})',
+			'RETURN user',
+		].join('\n'),
+		params: {
+			data: data
+		}
+	}
+
+	db.cypher(qp, function (err, results) {
+		if (err) return callback(err);
+		callback(null, results[0]['user']);
+	});
+};
+
+User.update = function (data, callback) {
+	var qp = {
+		query: [
+			'MATCH (user:User)',
+			'WHERE id(user) = {userId}',
+			'SET user += {props}',
+			'RETURN user',
+		].join('\n'),
+		params: {
+			userId: data.id,
+			props: data.props,
+		}
+	}
+
+	db.cypher(qp, function (err, results) {
+		if (err) return callback(err);
+		callback(null, results[0]['user']);
+	});
+}
+}

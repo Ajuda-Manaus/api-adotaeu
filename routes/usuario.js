@@ -1,39 +1,46 @@
-var expressJoi =require('express-joi');
+import passport from 'passport';
 
-/**
-* @api {get} /animais Request User information
-* @apiName GetAnimais
-* @apiGroup Animais
-*
-* @apiParam {Number} limit Número limite de animais solicitados.
-* @apiParam {Number} skip Pega animais depois desse numero solicitado.
+module.exports = function(app) {
 
-* @apiSuccess {String} firstname Firstname of the User.
-* @apiSuccess {String} lastname  Lastname of the User.
-*
-* @apiSuccessExample Success-Response:
-*     HTTP/1.1 200 OK
-*     {
-*       "id": "12345",
-*       "name": "Dogão é mau",
-*       "image" : "urldaimage.jpg"
-*     }
-*
-*/
+	const User = app.models.usuario;
 
+	const failure = {
+		"status": "Autenticação falhou!" 
+	};
 
-module.exports = (app) => {
-	const usuario = app.controlers.usuario;
+	const deslogado = {
+		"status": "Deslogado!" 
+	};
 
-	app.get('/usuario', usuario.getAll);
+	// PROFILE SECTION =========================
+	app.get('/profile', function(req, res) {
+				res.json(req.user);
+	});
 
-	app.get('/usuario/:usuarioId', usuario.getByUsuarioId);
+	app.get('/failure', function(req, res) {
+		res.json(failure);
+	});
 
-	app.post('/usuario', expressJoi.joiValidate(usuario.schemaUsuarioAdd), usuario.add);
+	app.get('/desligado', function(req, res) {
+		res.json(deslogado);
+	});
+// facebook -------------------------------
 
-	app.put('/usuario/:usuarioId', expressJoi.joiValidate(usuario.schemaUsuarioUpdate), usuario.update);
+		// send to facebook to do the authentication
+		app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 
-	app.delete('/usuario/:usuarioId', usuario.delete);
-/**/
-};
+		// handle the callback after facebook has authenticated the user
+		app.get('/auth/facebook/callback',
+			passport.authenticate('facebook', {
+				successRedirect : '/profile',
+				failureRedirect : '/failure',
+				failureFlash : true // allow flash messages
+			}));
+
+		app.get('/logout', function(req, res){
+ 			req.logout();
+  			res.json('/desligado');
+		});
+
+}
   

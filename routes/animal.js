@@ -1,3 +1,5 @@
+var expressJoi =require('express-joi');
+
 /**
 * @api {get} /animais Request User information
 * @apiName GetAnimais
@@ -26,12 +28,11 @@ module.exports = (app) => {
 	
 	app.get('/animal/:animalId', animal.findByAnimalId);
 
-	app.post('/animal', animal.add);
+	app.post('/animal',expressJoi.joiValidate(animal.schemaAnimalAdd), animal.add);
 
-	app.put('/animal/:animalId', animal.update);
+	app.put('/animal/:animalId', expressJoi.joiValidate(animal.schemaAnimalUpdate), animal.update);
 
 	app.delete('/animal/:animalId', animal.delete);
 	
 /**/
 };
-  

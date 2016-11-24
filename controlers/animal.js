@@ -1,3 +1,5 @@
+var expressJoi =require('express-joi');
+
 module.exports = function(app) {
 	const animal = app.models.animal;
 	const erroAnimal = {
@@ -13,6 +15,31 @@ module.exports = function(app) {
     					"api" : "adota-eu",
 						"versao" :"0.0.1"
     					};
+
+	// Use the Joi object to create a few schemas for your routes. 
+	this.schemaAnimalAdd ={
+	    nome: expressJoi.Joi.types.String().alphanum().min(1).max(50).required(),
+	    raca: expressJoi.Joi.types.String().alphanum().min(1).max(20).required(),
+	    idade: expressJoi.Joi.types.Number().required(),
+	    descricao: expressJoi.Joi.types.String().alphanum().min(1).max(50).required(),
+	    especie: expressJoi.Joi.types.String().alphanum().min(1).max(20).required(),
+	    doador: expressJoi.Joi.types.String().alphanum().min(1).max(50).required(),
+	    telefone: expressJoi.Joi.types.String().regex(/^[(]{0,1}[0-9]{2}[)]{0,1}[-\s\.]{0,1}[0-9]{5}[-\s\.]{0,1}[0-9]{4}$/),
+	    foto: expressJoi.Joi.types.String().regex(/\.(jpe?g|png)$/i)
+	};
+
+	this.schemaAnimalUpdate ={
+	    animalId: expressJoi.Joi.types.Number(),
+	    nome: expressJoi.Joi.types.String().alphanum().min(1).max(50).required(),
+	    raca: expressJoi.Joi.types.String().alphanum().min(1).max(20).required(),
+	    idade: expressJoi.Joi.types.Number().required(),
+	    descricao: expressJoi.Joi.types.String().alphanum().min(1).max(50).required(),
+	    especie: expressJoi.Joi.types.String().alphanum().min(1).max(20).required(),
+	    doador: expressJoi.Joi.types.String().alphanum().min(1).max(50).required(),
+	    telefone: expressJoi.Joi.types.String().regex(/^[(]{0,1}[0-9]{2}[)]{0,1}[-\s\.]{0,1}[0-9]{5}[-\s\.]{0,1}[0-9]{4}$/),
+	    foto: expressJoi.Joi.types.String().regex(/\.(jpe?g|png)$/i)
+	};
+
 
 	this.findAll = function(req, res){
 		animal.find({}, 'animal', (err, animal) => {
@@ -87,7 +114,5 @@ module.exports = function(app) {
     });
   };
 
-
-
-  	return this;
+	return this;
 };

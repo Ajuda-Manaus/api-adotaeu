@@ -1,7 +1,7 @@
 export default {
   isTest: false,
   server: {
-    port: 4000,
+    port: 3000,
     host: 'localhost'
   },
   bodyParser: {

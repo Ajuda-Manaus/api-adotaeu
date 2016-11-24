@@ -12,12 +12,14 @@ app.use(bodyParser.urlencoded(config.bodyParser));
 app.use(bodyParser.json());
 app.use(compression());
 
+
 consign(config.consign)
   .include('models')
   .then('controlers')
   .then('routes')
   .into(app, db)
 ;
+
 
 app.listen(config.server.port, () => {
   if (!config.isTest) {

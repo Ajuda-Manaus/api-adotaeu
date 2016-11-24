@@ -9,7 +9,10 @@ module.exports = (app, db) => {
     raca: { type: String, trim: true, required: true },
     idade: { type: String, required: true },
     descricao: { type: String, required: true },
-    especie: { type: String, required: true }
+    especie: { type: String, required: true },
+    doador: { type: String, required: true },
+    telefone: { type: String, required: true },
+    foto: { type: String, required: true }
   };
 
   return animal.db;

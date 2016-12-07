@@ -4,6 +4,8 @@ import bodyParser from 'body-parser';
 import compression from 'compression';
 import seraph from 'seraph';
 import config from './config.js';
+import fileUpload from 'express-fileupload';
+
 
 const app = express();
 const db = seraph(config.neo4j);
@@ -11,6 +13,8 @@ const db = seraph(config.neo4j);
 app.use(bodyParser.urlencoded(config.bodyParser));
 app.use(bodyParser.json());
 app.use(compression());
+app.use(fileUpload());
+
 
 
 consign(config.consign)

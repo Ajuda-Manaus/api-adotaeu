@@ -30,13 +30,17 @@
   "dependencies": {
     "body-parser": "1.15.2",
     "chai": "3.5.0",
+    "cloudinary": "^1.4.6",
     "compression": "1.6.2",
     "consign": "0.1.2",
     "eslint": "3.6.0",
     "express": "4.14.0",
+    "express-fileupload": "0.0.5",
     "express-joi": "^0.3.1",
+    "firebase": "^3.6.3",
     "neo4j": "^2.0.0-RC1",
     "nodemon": "*",
+    "s3-uploader": "^2.0.3",
     "seraph": "0.14.4",
     "seraph-model": "0.8.2",
     "supertest": "1.2.0"

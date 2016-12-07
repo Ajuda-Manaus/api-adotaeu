@@ -33,6 +33,8 @@ module.exports = (app) => {
 	app.put('/animal/:animalId', expressJoi.joiValidate(animal.schemaAnimalUpdate), animal.update);
 
 	app.delete('/animal/:animalId', animal.delete);
+
+	app.post('/upload', animal.uploader)
 	
 /**/
 };

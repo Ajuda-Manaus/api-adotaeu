@@ -1,4 +1,5 @@
 var expressJoi =require('express-joi');
+var Upload = require('s3-uploader');
 
 module.exports = function(app) {
 	const animal = app.models.animal;
@@ -15,6 +16,29 @@ module.exports = function(app) {
     					"api" : "adota-eu",
 						"versao" :"0.0.1"
     					};
+
+		var client = new Upload('my_s3_bucket', {
+ 			 aws: {
+   			 path: 'images/',
+   			 region: 'us-east-1',
+    		 acl: 'public-read'
+				 acessKeyId: ,
+				 secretAcessKey:
+  					},
+ 
+ 			 cleanup: {
+   			 versions: true,
+    		 original: false
+  							},
+ 
+  		 versions: {
+     			maxHeight: 500,
+    			maxWidth: 500,
+    			format: 'jpg',
+    			suffix: '-large',
+    			quality: 80,
+    						}
+});
 
 	// Use the Joi object to create a few schemas for your routes. 
 	this.schemaAnimalAdd ={
@@ -114,5 +138,20 @@ module.exports = function(app) {
     });
   };
 
+  	this.uploader = function(req, res){
+			client.upload(req.files.image, {}, function(err, versions, meta) {
+  			if (err) { throw err; }
+ 				versions.forEach(function(image) {
+    				console.log(image.url);
+    // 1024 760 https://my-bucket.s3.amazonaws.com/path/110ec58a-a0f2-4ac4-8393-c866d813b8d1.jpg 
+  });
+});
+});
+
+	};
+//cloudinary.uploader.upload(`${req.files.image.path}`, function(result) { 
+//  		console.log(result) 
+//		});
+		
 	return this;
-};
+}
